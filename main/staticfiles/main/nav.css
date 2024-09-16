@@ -1,4 +1,17 @@
-p{
+#nav-bar{
+    background-color: aliceblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#main-text{
+    font-family: Agency FB;
+    font-size: 100px;
+    font-weight: 1000;
+}
+#main-number{
+    color: #ec6f00;
     font-family: Agency FB;
     font-size: 100px;
     font-weight: 1000;
