@@ -2,8 +2,13 @@
 {% include "nav.html" %}
 
 <head>
-    <link rel='stylesheet' type='text/css' media='screen' href="{% static 'main/main.css' %}">
+    <link rel='stylesheet' type='text/css' media='screen' href="{% static 'staticfiles/main.css' %}">
 </head>
 
 <h1>Index</h1>
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_p }}  <!-- Renders the form fields as paragraphs -->
+    <input type="submit" value="Submit">  <!-- Fixed the quote here -->
+</form>
 {% include "post.html" %}
