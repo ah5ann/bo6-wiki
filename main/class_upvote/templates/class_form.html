@@ -1,0 +1,7 @@
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.weapon_name }}
+    {{ form.as_p }}  <!-- Ensure form is rendered properly -->
+    <input type="submit" value="Submit">
+    <h5>Bo2 Form</h5>
+</form>

@@ -6,9 +6,7 @@
 </head>
 
 <h1>Index</h1>
-<form action="" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}  <!-- Renders the form fields as paragraphs -->
-    <input type="submit" value="Submit">  <!-- Fixed the quote here -->
-</form>
+
+{% include "class_upvote/templates/class_form.html" %}
+
 {% include "post.html" %}
