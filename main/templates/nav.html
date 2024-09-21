@@ -1,9 +1,21 @@
 {% load static %}
 
 <head>
-    <link rel='stylesheet' type='text/css' media='screen' href="{% static 'main/nav.css' %}">
+    <link rel='stylesheet' type='text/css' media='screen' href="{% static 'main/css/nav.css' %}">
+    <script src="{% static 'main/js/nav.js' %}"></script>
 </head>
 
-<div id="nav-bar">
-<span id="main-text">BLACK OPS<span id="main-number"> 6</span></span>
-</div>
+<div class="mobile-container">
+
+    <!-- Top Navigation Menu -->
+    <div class="topnav">
+        <a href="#home" class="active">Logo</a>
+        <div id="myLinks">
+            <a href="#news">News</a>
+            <a href="#contact">Contact</a>
+            <a href="#about">About</a>
+        </div>
+        <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+            <i class="fa fa-bars"></i>
+        </a>
+    </div>
