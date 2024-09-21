@@ -12,4 +12,5 @@ def form_view(request):
         form = ClassForm()  # Properly instantiate the form
 
     context = {'form': form}
-    return render(request, 'index.html', context)  # Render the template with the form in context
+    return render(request, 'create_a_class.html', context)  # Render the template with the form in context
+

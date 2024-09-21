@@ -3,5 +3,6 @@ from . import views
 from .views import form_view
 
 urlpatterns = [
-    path('', form_view, name='form'),   
+    path('createaclass/', form_view, name='form'),   
+    #path('createaclass/', create_a_class_view, name='createaclass')
 ]
