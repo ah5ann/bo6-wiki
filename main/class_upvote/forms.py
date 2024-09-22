@@ -1,5 +1,5 @@
 from django import forms
-from .models import Weapon, Post, Attachment, AttachmentType
+from .models import Weapon, Attachment
 
 class ClassForm(forms.Form):
     post_name = forms.CharField(max_length=30)
