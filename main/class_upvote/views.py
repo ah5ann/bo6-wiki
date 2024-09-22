@@ -14,3 +14,5 @@ def form_view(request):
     context = {'form': form}
     return render(request, 'create_a_class.html', context)  # Render the template with the form in context
 
+def post_details(request):
+    return render(request, 'post_detail.html')

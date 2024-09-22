@@ -1,8 +1,8 @@
 from django.urls import path
 from . import views
-from .views import form_view
+from .views import form_view, post_details
 
 urlpatterns = [
     path('createaclass/', form_view, name='form'),   
-    #path('createaclass/', create_a_class_view, name='createaclass')
+    path('post_details/', post_details, name='postdetails')
 ]
