@@ -22,4 +22,5 @@ urlpatterns = [
     path("", views.home, name="Home"),
     path("", include('class_upvote.urls')),
     path('admin/', admin.site.urls),
+    path("accounts/", include("django.contrib.auth.urls"))
 ]
