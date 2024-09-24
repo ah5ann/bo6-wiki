@@ -2,7 +2,9 @@ from django.shortcuts import render, redirect
 from .forms import ClassForm
 from django.urls import reverse
 from .models import Post
+from django.contrib.auth.decorators import login_required
 
+@login_required(login_url="/accounts/login/")
 def form_view(request):
     if request.method == 'POST':
         form = ClassForm(request.POST)
