@@ -17,10 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from . import views
+from .views import login_view
 
 urlpatterns = [
-    path("", views.home, name="Home"),
-    path("", include('class_upvote.urls')),
-    path('admin/', admin.site.urls),
-    path("accounts/", include("django.contrib.auth.urls"))
+    path("accounts/login/", login_view, name='login'),  # Custom login view
+    path("accounts/", include("django.contrib.auth.urls")),  # This includes the default auth URLs
+    path("", include('class_upvote.urls')),  # Include your app URLs
+    path("", views.home, name="Home"),  # Home view
+    path('admin/', admin.site.urls),  # Admin interface
 ]
