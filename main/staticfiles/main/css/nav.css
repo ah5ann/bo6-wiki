@@ -48,3 +48,11 @@
     text-align: left;
   }
 }
+
+#logout-btn{
+  top: -3px;
+  position: relative;
+  background: no-repeat;
+  color: white;
+  border: none;
+}

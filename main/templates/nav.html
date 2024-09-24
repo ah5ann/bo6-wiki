@@ -11,6 +11,16 @@
   <a href="/" class="" active>Home</a>
   <a href="/createaclass">Create A Class</a>
   <a href="/post_short">Post</a>
+  {% if user.is_authenticated %}
+  <form id="logout-form" method="post" action="{% url 'logout' %}?next={{ '/' }}">
+    {% csrf_token %}
+    <br>
+    <button id="logout-btn" type="submit" class="btn btn-link">Logout - {{ user.get_username }}</button>
+  </form>
+  {% else %}
+  <a href="{% url 'login' %}?next={{ request.path }}">Login</a>
+  {% endif %}
+
   <a href="javascript:void(0);" class="icon" onclick="myFunction()">
     <i class="fa fa-bars"></i>
   </a>
