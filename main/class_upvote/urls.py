@@ -4,5 +4,5 @@ from .views import form_view, post_details
 
 urlpatterns = [
     path('createaclass/', form_view, name='form'),   
-    path('post_details/', post_details, name='postdetails')
+    path('', post_details, name='postshort')
 ]

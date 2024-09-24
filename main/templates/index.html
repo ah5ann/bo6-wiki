@@ -7,8 +7,8 @@
 
 {% include "nav.html" %}
 
-{% include "post_short.html" %}
-
+{% include "class_upvote/templates/post_short.html" with post_data=post_data %}
+<br>
 {% if user.is_authenticated %}
 <form id="logout-form" method="post" action="{% url 'logout' %}?next={{ '/' }}">
   {% csrf_token %}

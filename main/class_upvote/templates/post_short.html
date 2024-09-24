@@ -1,0 +1,21 @@
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>    
+
+<h3>Post Name</h3>
+{% if post_data %}
+{% for x in post_data %}
+{{ x.post_name }} 
+{{ x.main_weapon.weapon_name }}
+{{ x.id }}
+{{ x.main_weapon_id }}
+{{ x.attachment1_id }}
+{{ x.attachment2_id }}
+{{ x.attachment3_id }}
+{{ x.attachment4_id }}
+{{ x.attachment5_id }}
+<br>
+{% endfor %}
+{% else %}
+<p>No Posts</p>
+{% endif %}
