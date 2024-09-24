@@ -1,30 +1,17 @@
 {% load static %}
 
 <head>
-    <link rel='stylesheet' type='text/css' media='screen' href="{% static 'main/css/nav.css' %}">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="{% static 'main/js/nav.js' %}"></script>
+  <link rel='stylesheet' type='text/css' media='screen' href="{% static 'main/css/nav.css' %}">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="{% static 'main/js/nav.js' %}"></script>
 </head>
 
-    <!-- Top Navigation Menu -->
-    <div class="topnav">
-        <span class="holder">Logo</span>
-        <div id="myLinks">
-            <a href="/">Home</a>
-            <a href="/createaclass">Create A Class</a>
-            <a href="/post_details">Post</a>
-        </div>
-        <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-            <i class="fa fa-bars"></i>
-        </a>
-    </div>
 
-    {% if user.is_authenticated %}
-       <form id="logout-form" method="post" action="{% url 'logout' %}?next={{ '/' }}">
-         {% csrf_token %}
-         <button type="submit" class="btn btn-link">Logout</button>
-       </form>
-     {{ user.get_username }}
-   {% else %}
-     <a href="{% url 'login' %}?next={{ request.path }}">Login</a>
-   {% endif %}
+<div class="topnav" id="myTopnav">
+  <a href="/" class="" active>Home</a>
+  <a href="/createaclass">Create A Class</a>
+  <a href="/post_details">Post</a>
+  <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+    <i class="fa fa-bars"></i>
+  </a>
+</div>

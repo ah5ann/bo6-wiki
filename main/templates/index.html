@@ -2,9 +2,19 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel='stylesheet' type='text/css' media='screen' href="{% static 'main/main.css' %}">
+    <link rel='stylesheet' type='text/css' media='screen' href="{% static 'main/css/main.css' %}">
 </head>
 
 {% include "nav.html" %}
 
 {% include "post_short.html" %}
+
+{% if user.is_authenticated %}
+<form id="logout-form" method="post" action="{% url 'logout' %}?next={{ '/' }}">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-link">Logout</button>
+</form>
+{{ user.get_username }}
+{% else %}
+<a href="{% url 'login' %}?next={{ request.path }}">Login</a>
+{% endif %}
