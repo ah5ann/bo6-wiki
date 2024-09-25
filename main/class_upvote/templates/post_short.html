@@ -1,7 +1,5 @@
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>    
 
+{% block content %}
 <h3>Post Name</h3>
 {% if post_data %}
 {% for x in post_data %}
@@ -21,3 +19,4 @@
 {% else %}
 <p>No Posts</p>
 {% endif %}
+{% endblock %}

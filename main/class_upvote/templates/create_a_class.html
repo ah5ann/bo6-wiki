@@ -1,9 +1,6 @@
-{% include "nav.html" %}
+{% extends "base.html" %} 
 
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>    
-
+{% block content %}
 <h1>Create A Class View</h1>
 
 <form action="" method="post">
@@ -13,3 +10,5 @@
     <input type="submit" value="Submit">
     <h5>Bo2 Form</h5>
 </form>
+
+{% endblock %}

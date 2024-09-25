@@ -1,1 +1,11 @@
+{% load static %}
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' type='text/css' media='screen' href="{% static 'main/css/main.css' %}">
+</head>
+
 {% include 'nav.html' %}
+
+{% block content %}
+{% endblock %}

@@ -1,5 +1,6 @@
-{% include 'nav.html' %}
+{% extends 'base.html' %}
 
+{% block content %}
 <h3>My Posts</h3>
 {% if my_posts %}
 {% for x in my_posts %}
@@ -10,3 +11,4 @@
 {% else %}
 <p>No Posts</p>
 {% endif %}
+{% endblock %}
