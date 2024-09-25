@@ -26,7 +26,8 @@ def form_view(request):
                 attachment2=attachment2,
                 attachment3=attachment3,
                 attachment4=attachment4,
-                attachment5=attachment5
+                attachment5=attachment5,
+                created_by=request.user
             )
 
             # Redirect to the post details page after creation
@@ -50,3 +51,11 @@ def post_details(request, pk):
         'post': post
     }
     return render(request, 'post_details.html', context)
+
+@login_required(login_url="/accounts/login/")
+def my_posts(request):
+    my_posts = Post.objects.filter(created_by=request.user)
+    context = {
+        'my_posts': my_posts
+    }
+    return render(request, 'my_posts.html', context)

@@ -1,0 +1,12 @@
+{% include 'nav.html' %}
+
+<h3>My Posts</h3>
+{% if my_posts %}
+{% for x in my_posts %}
+{{ x.post_name }} 
+{{ x.id }}
+<br>
+{% endfor %}
+{% else %}
+<p>No Posts</p>
+{% endif %}

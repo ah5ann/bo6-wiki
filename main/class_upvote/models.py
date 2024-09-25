@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Category(models.Model):
     category_name = models.CharField(max_length=30)
@@ -38,6 +39,6 @@ class Post(models.Model):
     attachment3 = models.ForeignKey(Attachment, on_delete=models.CASCADE, related_name='post_attachment3', default=1)
     attachment4 = models.ForeignKey(Attachment, on_delete=models.CASCADE, related_name='post_attachment4', default=1)
     attachment5 = models.ForeignKey(Attachment, on_delete=models.CASCADE, related_name='post_attachment5', default=1)
-
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     def __str__(self):
         return self.post_name

@@ -10,7 +10,7 @@
 <div class="topnav" id="myTopnav">
   <a href="/" class="" active>Home</a>
   <a href="/createaclass">Create A Class</a>
-  <a href="/post_short">Post</a>
+  <a href="/my_posts">My Posts</a>
   {% if user.is_authenticated %}
   <form id="logout-form" method="post" action="{% url 'logout' %}?next={{ '/' }}">
     {% csrf_token %}
