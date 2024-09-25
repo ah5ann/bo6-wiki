@@ -14,6 +14,7 @@
 {{ x.attachment3_id }}
 {{ x.attachment4_id }}
 {{ x.attachment5_id }}
+<a href="{% url 'post_details' x.id%}">View Post</a>
 <br>
 {% endfor %}
 {% else %}

@@ -37,10 +37,16 @@ def form_view(request):
     context = {'form': form}
     return render(request, 'create_a_class.html', context)
 
-def post_details(request):
+def post(request):
     post_data = Post.objects.all()
     context = {
         'post_data': post_data
     }
-    print(post_data.query)
     return render(request, 'index.html', context)
+
+def post_details(request, pk):
+    post = Post.objects.get(id=pk)
+    context = {
+        'post': post
+    }
+    return render(request, 'post_details.html', context)
