@@ -42,7 +42,7 @@ def form_view(request):
 def post(request):
     post_data = Post.objects.all()
 
-    p = Paginator(Post.objects.all(), 1)
+    p = Paginator(Post.objects.all(), 5)
     page = request.GET.get('page')
     list_page = p.get_page(page)
 

@@ -1,6 +1,5 @@
-
 {% block content %}
-<h3>Post Name</h3>
+<!--<h3>Post Name</h3>
 {% if post_data %}
 {% for x in list_page %}
 {{ x.post_name }} 
@@ -19,7 +18,28 @@
 {% else %}
 <p>No Posts</p>
 {% endif %}
-{% endblock %}
+{% endblock %}-->
+
+{% if post_data %}
+{% for x in list_page %}
+<div class="card text-center">
+    <div class="card-header">
+        Featured
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">{{ x.post_name }}</h5>
+        <p class="card-text">{{ x.main_weapon.weapon_name }}</p>
+        <a href="{% url 'post_details' x.id%}">View Post</a>
+    </div>
+    <div class="card-footer text-muted">
+        2 days ago
+    </div>
+</div>
+{% endfor %}
+{% else %}
+<p>No Posts</p>
+{% endif %}
+
 
 {% if list_page.has_previous %}
 <a href="?page=1">&laquo First</a>

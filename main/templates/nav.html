@@ -1,12 +1,12 @@
 {% load static %}
 
-<head>
+<!--<head>
   <link rel='stylesheet' type='text/css' media='screen' href="{% static 'main/css/nav.css' %}">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="{% static 'main/js/nav.js' %}"></script>
-</head>
+</head>-->
 
-<div class="topnav" id="myTopnav">
+<!--<div class="topnav" id="myTopnav">
   <a href="/" class="" active>Home</a>
   <a href="/createaclass">Create A Class</a>
   <a href="/my_posts">My Posts</a>
@@ -23,4 +23,38 @@
   <a href="javascript:void(0);" class="icon" onclick="myFunction()">
     <i class="fa fa-bars"></i>
   </a>
-</div>
+</div>-->
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="#">Navbar</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
+    aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+      <li class="nav-item active">
+        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/createaclass">Create A Class</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/my_posts">My Posts</a>
+      </li>
+    </ul>
+    {% if user.is_authenticated %}
+    <form id="logout-form" class="form-inline my-2 my-lg-0" method="post" action="{% url 'logout' %}?next={{ '/' }}">
+      {% csrf_token %}
+      <br>
+      <button id="logout-btn" class="btn btn-outline-success my-2 my-sm-0" type="submit" class="btn btn-link">Logout -
+        {{ user.get_username }}</button>
+    </form>
+    {% else %}
+    <a class="nav-link" href="{% url 'login' %}?next={{ request.path }}">Login</a>
+    {% endif %}
+  </div>
+</nav>
+
+
