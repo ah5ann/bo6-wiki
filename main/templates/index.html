@@ -4,7 +4,7 @@
 {% block content %}
 {% include "class_upvote/templates/post_short.html" with post_data=post_data %}
 
-<br>
+<!--
 {% if user.is_authenticated %}
 <form id="logout-form" method="post" action="{% url 'logout' %}?next={{ '/' }}">
   {% csrf_token %}
@@ -14,4 +14,4 @@
 {% else %}
 <a href="{% url 'login' %}?next={{ request.path }}">Login</a>
 {% endif %}
-{% endblock %}
+{% endblock %}-->

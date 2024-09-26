@@ -22,17 +22,16 @@
 
 {% if post_data %}
 {% for x in list_page %}
-<div class="card text-center">
+<div class="card text-center" style="padding: 15px; margin: 20px; border-radius: 20px;">
     <div class="card-header">
-        Featured
+        <h5 class="card-title">{{ x.post_name }}</h5>
     </div>
     <div class="card-body">
-        <h5 class="card-title">{{ x.post_name }}</h5>
+        <!--<h5 class="card-title">{{ x.post_name }}</h5>-->
         <p class="card-text">{{ x.main_weapon.weapon_name }}</p>
-        <a href="{% url 'post_details' x.id%}">View Post</a>
     </div>
     <div class="card-footer text-muted">
-        2 days ago
+        <a href="{% url 'post_details' x.id%}">View Post</a>
     </div>
 </div>
 {% endfor %}
@@ -40,9 +39,8 @@
 <p>No Posts</p>
 {% endif %}
 
-
+<!--<div style="border:solid black 1px;">
 {% if list_page.has_previous %}
-<a href="?page=1">&laquo First</a>
 <a href="?page={{ list_page.previous_page_number }}">Previous</a>
 {% endif %}
 
@@ -50,5 +48,25 @@ Page {{ list_page.number  }} of {{ list_page.paginator.num_pages }}
 
 {% if list_page.has_next %}
 <a href="?page={{ list_page.next_page_number }}">Next</a>
-<a href="?page={{ list_page.paginator.num_pages }}">Last &raquo</a>
 {% endif %}
+</div>-->
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        <li class="page-item">
+
+            {% if list_page.has_previous %}
+            <a class="page-link" href="?page={{ list_page.previous_page_number }}">Previous</a>
+            {% endif %}
+
+        </li>
+        <li class="page-item"><a class="page-link"> Page {{ list_page.number  }} of {{ list_page.paginator.num_pages }}</a></li>
+        <li class="page-item">
+
+            {% if list_page.has_next %}
+            <a class="page-link" href="?page={{ list_page.next_page_number }}">Next</a>
+            {% endif %}
+
+        </li>
+    </ul>
+</nav>
