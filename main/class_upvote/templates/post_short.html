@@ -2,7 +2,7 @@
 {% block content %}
 <h3>Post Name</h3>
 {% if post_data %}
-{% for x in post_data %}
+{% for x in list_page %}
 {{ x.post_name }} 
 {{ x.main_weapon.weapon_name }}
 {{ x.id }}
@@ -20,3 +20,15 @@
 <p>No Posts</p>
 {% endif %}
 {% endblock %}
+
+{% if list_page.has_previous %}
+<a href="?page=1">&laquo First</a>
+<a href="?page={{ list_page.previous_page_number }}">Previous</a>
+{% endif %}
+
+Page {{ list_page.number  }} of {{ list_page.paginator.num_pages }}
+
+{% if list_page.has_next %}
+<a href="?page={{ list_page.next_page_number }}">Next</a>
+<a href="?page={{ list_page.paginator.num_pages }}">Last &raquo</a>
+{% endif %}

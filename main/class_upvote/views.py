@@ -3,6 +3,7 @@ from .forms import ClassForm
 from django.urls import reverse
 from .models import Post
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 
 @login_required(login_url="/accounts/login/")
 def form_view(request):
@@ -40,8 +41,14 @@ def form_view(request):
 
 def post(request):
     post_data = Post.objects.all()
+
+    p = Paginator(Post.objects.all(), 1)
+    page = request.GET.get('page')
+    list_page = p.get_page(page)
+
     context = {
-        'post_data': post_data
+        'post_data': post_data,
+        'list_page': list_page
     }
     return render(request, 'index.html', context)
 
