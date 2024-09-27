@@ -22,7 +22,7 @@
 
 {% if post_data %}
 {% for x in list_page %}
-<div class="card text-center" style="padding: 15px; margin: 20px; border-radius: 20px;">
+<div class="card text-center" style="padding: 15px; margin: 20px; border-radius: 20px; top: 50px;">
     <div class="card-header">
         <h5 class="card-title">{{ x.post_name }}</h5>
     </div>
@@ -50,9 +50,10 @@ Page {{ list_page.number  }} of {{ list_page.paginator.num_pages }}
 <a href="?page={{ list_page.next_page_number }}">Next</a>
 {% endif %}
 </div>-->
+<br>
+<br>
 
-<nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-center">
+    <ul class="pagination justify-content-center" style="">
         <li class="page-item">
 
             {% if list_page.has_previous %}
@@ -69,4 +70,3 @@ Page {{ list_page.number  }} of {{ list_page.paginator.num_pages }}
 
         </li>
     </ul>
-</nav>
