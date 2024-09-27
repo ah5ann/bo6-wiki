@@ -1,14 +1,27 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h3>My Posts</h3>
+<br>
+
 {% if my_posts %}
 {% for x in my_posts %}
-{{ x.post_name }} 
-{{ x.id }}
-<br>
+<div class="card text-center" style="padding: 15px; margin: 20px; border-radius: 20px; top: 50px; border: solid #ec6f00 3px;">
+    <div class="card-header">
+        <h5 class="card-title">{{ x.post_name }}</h5>
+    </div>
+    <div class="card-body">
+        <!--<h5 class="card-title">{{ x.post_name }}</h5>-->
+        <p class="card-text">{{ x.created_by }}</p>
+    </div>
+    <div class="card-footer text-muted">
+        <a href="{% url 'post_details' x.id%}">View Post</a>
+    </div>
+</div>
 {% endfor %}
 {% else %}
 <p>No Posts</p>
 {% endif %}
+
+<br>
+<br>
 {% endblock %}

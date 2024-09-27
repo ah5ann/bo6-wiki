@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'class_upvote'
+    'class_upvote',
+    'django_filters'
 ]
 
 MIDDLEWARE = [

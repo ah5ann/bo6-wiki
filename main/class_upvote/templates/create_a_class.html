@@ -1,6 +1,12 @@
 {% extends "base.html" %} 
 
 {% block content %}
+
+<br>
+<br>
+<br>
+
+<div class="container d-flex flex-column justify-content-center align-items-center">
 <h1>Create A Class View</h1>
 
 <form action="" method="post">
@@ -8,7 +14,7 @@
     <!-- {{ form.weapon_name }} -->
     {{ form.as_p }}  <!-- Ensure form is rendered properly -->
     <input type="submit" value="Submit">
-    <h5>Bo2 Form</h5>
 </form>
-
+</div>
+<br>
 {% endblock %}

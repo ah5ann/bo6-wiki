@@ -32,6 +32,8 @@
     </div>
     <div class="card-footer text-muted">
         <a href="{% url 'post_details' x.id%}">View Post</a>
+        <span>{{ x.up_vote_total }}</span>
+        <span>{{ x.created_date }}</span>
     </div>
 </div>
 {% endfor %}
