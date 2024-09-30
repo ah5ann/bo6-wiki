@@ -48,6 +48,8 @@ def post(request):
     
     ordered_queryset = filtered_queryset
     
+    total_posts = len(ordered_queryset)
+    
     sort_top = request.GET.get('sort')
     if sort_top == 'desc':
         ordered_queryset = filtered_queryset.order_by('-up_vote_total')
@@ -62,7 +64,8 @@ def post(request):
     context = {
         'post_data': filtered_queryset,
         'list_page': list_page,
-        'my_filter': my_filter
+        'my_filter': my_filter,
+        'total_posts': total_posts
     }
     return render(request, 'index.html', context)
 

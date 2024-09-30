@@ -3,36 +3,33 @@
 <br>
 <br>
 <br>
-
+<div class="justify-content-center" style="margin-left: 20px; margin-top: 20px;">
 <form method="GET" style="display: inline;">
     <input type="hidden" name="up_vote_total" value="{{ my_filter.form.up_vote_total.value }}">
     <button type="submit" name="sort" value="desc">Top</button>
     <button type="submit" name="sort" value="newest">Newest</button>
+    <span class="total_results" style="float: right; margin-right: 20px;">Total Results: {{ total_posts }}</span>
 </form>
-
+</div>
 {% if post_data %}
 {% for x in list_page %}
-<div class="card text-center" style="padding: 15px; margin: 20px; border-radius: 20px; top: 50px; border: solid #ec6f00 3px;">
+<div class="card text-center" style="padding: 15px; margin: 20px; border-radius: 20px; top: 0px; border: solid #ec6f00 3px;">
     <div class="card-header">
-        <h5 class="card-title">{{ x.post_name }}</h5>
+        <h5 class="card-title">{{ x.post_name }}<br><span class="dtae_created" style="font-size: 12px; float: right; color: #837a7a;">{{ x.created_date }}</span></h5>
     </div>
     <div class="card-body">
         <!--<h5 class="card-title">{{ x.post_name }}</h5>-->
-        <p class="card-text">{{ x.main_weapon.weapon_name }}</p>
+        <p class="card-text">{{ x.main_weapon.weapon_name }} </br> {{ x.attachment1.attachment_name }} + {{ x.attachment2.attachment_name }} </br> {{ x.attachment3.attachment_name }} </br> {{ x.attachment4.attachment_name }} + {{ x.attachment5.attachment_name }}</p>
     </div>
     <div class="card-footer text-muted">
-        <a href="{% url 'post_details' x.id%}">View Post</a>
-        <span>({{ x.up_vote_total }})</span>
-        <span>{{ x.created_date }}</span>
+        <a href="{% url 'post_details' x.id%}" style="float: left;">View Post</a>
+        <span class="up_vote_total" style="float: right;"><button style="border-bottom: none;">&#8682;</button> {{ x.up_vote_total }} <button style="border-top: none;">&#8681;</button></span>
     </div>
 </div>
 {% endfor %}
 {% else %}
 <p>No Posts</p>
 {% endif %}
-
-<br>
-<br>
 
 <ul class="pagination justify-content-center">
     <li class="page-item">

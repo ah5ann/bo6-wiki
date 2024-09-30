@@ -1,30 +1,5 @@
 {% load static %}
 
-<!--<head>
-  <link rel='stylesheet' type='text/css' media='screen' href="{% static 'main/css/nav.css' %}">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="{% static 'main/js/nav.js' %}"></script>
-</head>-->
-
-<!--<div class="topnav" id="myTopnav">
-  <a href="/" class="" active>Home</a>
-  <a href="/createaclass">Create A Class</a>
-  <a href="/my_posts">My Posts</a>
-  {% if user.is_authenticated %}
-  <form id="logout-form" method="post" action="{% url 'logout' %}?next={{ '/' }}">
-    {% csrf_token %}
-    <br>
-    <button id="logout-btn" type="submit" class="btn btn-link">Logout - {{ user.get_username }}</button>
-  </form>
-  {% else %}
-  <a href="{% url 'login' %}?next={{ request.path }}">Login</a>
-  {% endif %}
-
-  <a href="javascript:void(0);" class="icon" onclick="myFunction()">
-    <i class="fa fa-bars"></i>
-  </a>
-</div>-->
-
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" style="text-align: center;">
   <a class="navbar-brand" href="/" style="font-family: Impact; font-size: 20px; margin: 0 auto;">BLACK OPS <span style="color: #ec6f00;">6</span> - Wiki</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
