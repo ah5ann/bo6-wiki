@@ -4,6 +4,7 @@ from django.urls import reverse
 from .models import Post
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from .filters import PostFilter
 
 @login_required(login_url="/accounts/login/")
 def form_view(request):
@@ -40,15 +41,28 @@ def form_view(request):
     return render(request, 'create_a_class.html', context)
 
 def post(request):
-    post_data = Post.objects.all()
+    queryset = Post.objects.all() # Get all posts
+    # Apply filtering
+    my_filter = PostFilter(request.GET, queryset=queryset)
+    filtered_queryset = my_filter.qs  # Get the filtered queryset
+    
+    ordered_queryset = filtered_queryset
+    
+    sort_top = request.GET.get('sort')
+    if sort_top == 'desc':
+        ordered_queryset = filtered_queryset.order_by('-up_vote_total')
+    elif sort_top == 'newest':
+        ordered_queryset = filtered_queryset.order_by('-created_date')
 
-    p = Paginator(Post.objects.all(), 5)
+    # Set up pagination
+    paginator = Paginator(ordered_queryset, 5)  # 5 posts per page
     page = request.GET.get('page')
-    list_page = p.get_page(page)
+    list_page = paginator.get_page(page)
 
     context = {
-        'post_data': post_data,
-        'list_page': list_page
+        'post_data': filtered_queryset,
+        'list_page': list_page,
+        'my_filter': my_filter
     }
     return render(request, 'index.html', context)
 

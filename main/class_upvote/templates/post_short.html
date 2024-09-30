@@ -1,24 +1,14 @@
 {% block content %}
-<!--<h3>Post Name</h3>
-{% if post_data %}
-{% for x in list_page %}
-{{ x.post_name }} 
-{{ x.main_weapon.weapon_name }}
-{{ x.id }}
-{{ x.main_weapon_id }}
-{{ x.attachment1_id }}
-{{ x.attachment2_id }}
-{{ x.attachment3_id }}
-{{ x.attachment4_id }}
-{{ x.attachment5_id }}
-{{ x.created_by }}
-<a href="{% url 'post_details' x.id%}">View Post</a>
+
 <br>
-{% endfor %}
-{% else %}
-<p>No Posts</p>
-{% endif %}
-{% endblock %}-->
+<br>
+<br>
+
+<form method="GET" style="display: inline;">
+    <input type="hidden" name="up_vote_total" value="{{ my_filter.form.up_vote_total.value }}">
+    <button type="submit" name="sort" value="desc">Top</button>
+    <button type="submit" name="sort" value="newest">Newest</button>
+</form>
 
 {% if post_data %}
 {% for x in list_page %}
@@ -32,7 +22,7 @@
     </div>
     <div class="card-footer text-muted">
         <a href="{% url 'post_details' x.id%}">View Post</a>
-        <span>{{ x.up_vote_total }}</span>
+        <span>({{ x.up_vote_total }})</span>
         <span>{{ x.created_date }}</span>
     </div>
 </div>
@@ -41,34 +31,22 @@
 <p>No Posts</p>
 {% endif %}
 
-<!--<div style="border:solid black 1px;">
-{% if list_page.has_previous %}
-<a href="?page={{ list_page.previous_page_number }}">Previous</a>
-{% endif %}
-
-Page {{ list_page.number  }} of {{ list_page.paginator.num_pages }}
-
-{% if list_page.has_next %}
-<a href="?page={{ list_page.next_page_number }}">Next</a>
-{% endif %}
-</div>-->
 <br>
 <br>
 
-    <ul class="pagination justify-content-center" style="">
-        <li class="page-item">
-
-            {% if list_page.has_previous %}
-            <a class="page-link" href="?page={{ list_page.previous_page_number }}">Previous</a>
-            {% endif %}
-
-        </li>
-        <li class="page-item"><a class="page-link"> Page {{ list_page.number  }} of {{ list_page.paginator.num_pages }}</a></li>
-        <li class="page-item">
-
-            {% if list_page.has_next %}
-            <a class="page-link" href="?page={{ list_page.next_page_number }}">Next</a>
-            {% endif %}
-
-        </li>
-    </ul>
+<ul class="pagination justify-content-center">
+    <li class="page-item">
+        {% if list_page.has_previous %}
+            <a class="page-link" href="?page={{ list_page.previous_page_number }}&up_vote_total={{ my_filter.form.up_vote_total.value }}&sort={{ request.GET.sort }}">Previous</a>
+        {% endif %}
+    </li>
+    <li class="page-item">
+        <a class="page-link"> Page {{ list_page.number }} of {{ list_page.paginator.num_pages }}</a>
+    </li>
+    <li class="page-item">
+        {% if list_page.has_next %}
+            <a class="page-link" href="?page={{ list_page.next_page_number }}&up_vote_total={{ my_filter.form.up_vote_total.value }}&sort={{ request.GET.sort }}">Next</a>
+        {% endif %}
+    </li>
+</ul>
+{% endblock %} 
