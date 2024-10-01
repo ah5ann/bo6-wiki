@@ -55,14 +55,16 @@ def post(request):
         ordered_queryset = filtered_queryset.order_by('-up_vote_total')
     elif sort_top == 'newest':
         ordered_queryset = filtered_queryset.order_by('-created_date')
-       
+    
+    vote_options = ''
+    
     if request.method == 'POST': 
         vote = request.POST.get('vote')
         vote_options = request.POST.get('vote_options')
     if vote_options == 'upvote':
-        print(f"Up voted {vote_options}")
+        print(f"Up voted {vote_options} {vote}")
     elif vote_options == 'downvote':
-        print(f"Down voted {vote_options}")
+        print(f"Down voted {vote_options} {vote}")
 
     # Set up pagination
     paginator = Paginator(ordered_queryset, 5)  # 5 posts per page
