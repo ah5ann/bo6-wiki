@@ -47,4 +47,4 @@ class Post(models.Model):
     up_vote_total = models.IntegerField(default=1)
     
     def __str__(self):
-        return self.post_name
+        return f"{self.post_name} {self.id}"
