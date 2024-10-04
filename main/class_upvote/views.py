@@ -55,19 +55,7 @@ def post(request):
         ordered_queryset = filtered_queryset.order_by('-up_vote_total')
     elif sort_top == 'newest':
         ordered_queryset = filtered_queryset.order_by('-created_date')
-        
-    posts_voted = Vote.objects.filter()
-    print("This", posts_voted)
-    
-    vote_options = ''
-    
-    if request.method == 'POST': 
-        post_voted = request.POST.get('vote')
-        vote_options = request.POST.get('vote_options')
-    if vote_options == 'upvote':
-        print(f"{vote_options} post id: {post_voted}")
-    elif vote_options == 'downvote':
-        print(f"{vote_options} post id: {post_voted}")
+
 
     # Set up pagination
     paginator = Paginator(ordered_queryset, 5)  # 5 posts per page
@@ -84,8 +72,27 @@ def post(request):
 
 def post_details(request, pk):
     post = Post.objects.get(id=pk)
+    
+    #
+    posts_voted = Vote.objects.filter(post_voted=post, voted_by=request.user).exists()
+    print("This", posts_voted)
+    
+    if posts_voted == False:
+        print("Post can vote")    
+        
+    vote_options = ''
+    
+    if request.method == 'POST': 
+        post_voted = request.POST.get('vote')
+        vote_options = request.POST.get('vote_options')
+    if vote_options == 'upvote':
+        print(f"{vote_options} post id: {post_voted}")
+    elif vote_options == 'downvote':
+        print(f"{vote_options} post id: {post_voted}")
+    
     context = {
-        'post': post
+        'post': post,
+        'posts_voted': posts_voted
     }
     return render(request, 'post_details.html', context)
 

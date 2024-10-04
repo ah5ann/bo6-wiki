@@ -5,12 +5,32 @@
 <br>
 <br>
 
-<h3>Post</h3>
 {% if post %}
-{{ post.post_name }} 
-{{ post.id }}
-<br>
+<div class="card text-center" style="padding: 15px; margin: 20px; border-radius: 20px; top: 0px; border: solid #ec6f00 3px;">
+    <div class="card-header">
+        <h5 class="card-title">{{ post.post_name }}<br><span class="date_created" style="font-size: 12px; float: right; color: #837a7a;">{{ x.created_date }}</span></h5>
+    </div>
+    <div class="card-body">
+        <!--<h5 class="card-title">{{ x.post_name }}</h5>-->
+        <p class="card-text">{{ post.main_weapon.weapon_name }} </br> {{ post.attachment1.attachment_name }} + {{ post.attachment2.attachment_name }} </br> {{ post.attachment3.attachment_name }} </br> {{ post.attachment4.attachment_name }} + {{ post.attachment5.attachment_name }}</p>
+    </div>
+    <div class="card-footer text-muted">
+
+        {% if posts_voted %}
+        <form method="POST">
+        {% csrf_token %}
+        <span class="up_vote_total" style="float: right;">
+            <input type="hidden" name="vote" value="{{ post.id }}">
+            <button type ="submit" name="vote_options" value="upvote" style="background-color: {% if posts_voted %}green{% else %}{% endif %}">&#8682;</button> 
+            {{ x.up_vote_total }} 
+            <button type ="submit" name="vote_options" value="downvote" style="background-color: {% if not posts_voted %}red{% else %}{% endif %}">&#8681;</button>
+        </span>
+        </form>
+        {% endif %}
+    </div>
+</div>
 {% else %}
 <p>No Posts</p>
 {% endif %}
-{% endblock %}
+{% endblock %} 
+<!--<a href="{% url 'post_details' x.id%}" style="float: left;">Comments</a>-->
