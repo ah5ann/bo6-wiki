@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .forms import ClassForm
 from django.urls import reverse
-from .models import Post
+from .models import Post, Vote
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from .filters import PostFilter
@@ -55,16 +55,19 @@ def post(request):
         ordered_queryset = filtered_queryset.order_by('-up_vote_total')
     elif sort_top == 'newest':
         ordered_queryset = filtered_queryset.order_by('-created_date')
+        
+    posts_voted = Vote.objects.filter()
+    print("This", posts_voted)
     
     vote_options = ''
     
     if request.method == 'POST': 
-        vote = request.POST.get('vote')
+        post_voted = request.POST.get('vote')
         vote_options = request.POST.get('vote_options')
     if vote_options == 'upvote':
-        print(f"Up voted {vote_options} {vote}")
+        print(f"{vote_options} post id: {post_voted}")
     elif vote_options == 'downvote':
-        print(f"Down voted {vote_options} {vote}")
+        print(f"{vote_options} post id: {post_voted}")
 
     # Set up pagination
     paginator = Paginator(ordered_queryset, 5)  # 5 posts per page

@@ -34,6 +34,7 @@ class AttachmentType(models.Model):
     def __str__(self):
         return self.attachment_type_name  # Display type name in Django admin
 
+
 class Post(models.Model):
     post_name = models.CharField(max_length=30)
     main_weapon = models.ForeignKey(Weapon, on_delete=models.CASCADE)
@@ -48,3 +49,12 @@ class Post(models.Model):
     
     def __str__(self):
         return f"{self.post_name} {self.id}"
+    
+
+class Vote(models.Model):
+    post_voted = models.ForeignKey(Post, on_delete=models.CASCADE)
+    voted_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    vote = models.CharField(max_length=10, choices=[('upvote', 'UpVote'), ('downvote', 'DownVote')])
+    
+    def __str__(self):
+        return f"{self.vote} {self.post_voted.id} {self.voted_by}"
