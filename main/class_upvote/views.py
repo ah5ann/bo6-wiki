@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import ClassForm
 from django.urls import reverse
 from .models import Post, Vote
@@ -42,6 +42,7 @@ def form_view(request):
 
 def post(request):
     queryset = Post.objects.all() # Get all posts
+    users_voted_posts = Vote.objects.all()
     # Apply filtering
     my_filter = PostFilter(request.GET, queryset=queryset)
     filtered_queryset = my_filter.qs  # Get the filtered queryset
@@ -66,34 +67,56 @@ def post(request):
         'post_data': filtered_queryset,
         'list_page': list_page,
         'my_filter': my_filter,
-        'total_posts': total_posts
+        'total_posts': total_posts,
+        'users_voted_posts': users_voted_posts
     }
     return render(request, 'index.html', context)
 
 def post_details(request, pk):
-    post = Post.objects.get(id=pk)
-    
-    #
-    posts_voted = Vote.objects.filter(post_voted=post, voted_by=request.user).exists()
-    print("This", posts_voted)
-    
-    if posts_voted == False:
-        print("Post can vote")    
-        
-    vote_options = ''
-    
-    if request.method == 'POST': 
-        post_voted = request.POST.get('vote')
+    post = get_object_or_404(Post, id=pk)
+
+    # Check if the user has already voted on this post
+    existing_vote = Vote.objects.filter(post_voted=post, voted_by=request.user).first()
+    has_voted = existing_vote is not None
+    print("Has Voted?", has_voted)
+
+    if request.method == 'POST':
         vote_options = request.POST.get('vote_options')
-    if vote_options == 'upvote':
-        print(f"{vote_options} post id: {post_voted}")
-    elif vote_options == 'downvote':
-        print(f"{vote_options} post id: {post_voted}")
-    
+
+        if has_voted:  # If the user has voted, we want to change their vote
+            if existing_vote.vote == 'upvote' and vote_options == 'downvote':
+                print(f"Changing vote from upvote to downvote for post id: {post.id}")
+                post.up_vote_total -= 1  # Decrement upvote count
+                post.save()
+                existing_vote.vote = 'downvote'  # Update the vote
+                existing_vote.save()
+            elif existing_vote.vote == 'downvote' and vote_options == 'upvote':
+                print(f"Changing vote from downvote to upvote for post id: {post.id}")
+                post.up_vote_total += 1  # Increment upvote count
+                post.save()
+                existing_vote.vote = 'upvote'  # Update the vote
+                existing_vote.save()
+        else:  # User is voting for the first time
+            if vote_options == 'upvote':
+                print(f"{vote_options} post id: {post.id}")
+                post.up_vote_total += 1
+                post.save()
+            elif vote_options == 'downvote':
+                print(f"{vote_options} post id: {post.id}")
+                post.up_vote_total -= 1
+                post.save()
+
+            # Create a new Vote instance
+            Vote.objects.create(voted_by=request.user, vote=vote_options, post_voted=post)
+
+        # Redirect to avoid form re-submission
+        return redirect('post_details', pk=pk)
+
     context = {
         'post': post,
-        'posts_voted': posts_voted
+        'posts_vote': existing_vote
     }
+    
     return render(request, 'post_details.html', context)
 
 @login_required(login_url="/accounts/login/")

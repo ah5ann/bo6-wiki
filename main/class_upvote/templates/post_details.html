@@ -16,17 +16,18 @@
     </div>
     <div class="card-footer text-muted">
 
-        {% if posts_voted %}
         <form method="POST">
-        {% csrf_token %}
-        <span class="up_vote_total" style="float: right;">
-            <input type="hidden" name="vote" value="{{ post.id }}">
-            <button type ="submit" name="vote_options" value="upvote" style="background-color: {% if posts_voted %}green{% else %}{% endif %}">&#8682;</button> 
-            {{ x.up_vote_total }} 
-            <button type ="submit" name="vote_options" value="downvote" style="background-color: {% if not posts_voted %}red{% else %}{% endif %}">&#8681;</button>
-        </span>
+            {% csrf_token %}
+            <span class="up_vote_total" style="float: right;">
+                <input type="hidden" name="vote" value="{{ post.id }}">
+                <button type="submit" name="vote_options" value="upvote"
+                    style="background-color: {% if posts_vote.vote == 'upvote' %}green{% else %}{% endif %} !important">&#8682;</button>
+                {{ x.up_vote_total }}
+                <button type="submit" name="vote_options" value="downvote"
+                    style="background-color: {% if posts_vote.vote == 'downvote' %}red{% else %}{% endif %} !important">&#8681;</button>
+            </span>
         </form>
-        {% endif %}
+        
     </div>
 </div>
 {% else %}
