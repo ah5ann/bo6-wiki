@@ -41,25 +41,34 @@ def form_view(request):
     return render(request, 'create_a_class.html', context)
 
 def post(request):
-    queryset = Post.objects.all() # Get all posts
-    users_voted_posts = Vote.objects.all()
+    queryset = Post.objects.all()  # Get all posts
+    
+    # User votes only if user is authenticated
+    user_votes = []
+    if request.user.is_authenticated:
+        user_votes = Vote.objects.filter(voted_by=request.user).values('post_voted', 'vote')
+
+    # Create a dictionary for quick access
+    user_vote_dict = {vote['post_voted']: vote['vote'] for vote in user_votes}
+    print("User Vote Dict:", user_vote_dict)  # Debugging output
+
     # Apply filtering
     my_filter = PostFilter(request.GET, queryset=queryset)
     filtered_queryset = my_filter.qs  # Get the filtered queryset
-    
-    ordered_queryset = filtered_queryset
-    
-    total_posts = len(ordered_queryset)
-    
-    sort_top = request.GET.get('sort')
-    if sort_top == 'desc':
-        ordered_queryset = filtered_queryset.order_by('-up_vote_total')
-    elif sort_top == 'newest':
-        ordered_queryset = filtered_queryset.order_by('-created_date')
 
+    # Now loop through the filtered queryset to set has_voted and user_vote
+    for post in filtered_queryset:
+        if post.id in user_vote_dict:
+            post.has_voted = True
+            post.user_vote = user_vote_dict[post.id]  # Should be 'upvote' or 'downvote'
+        else:
+            post.has_voted = False
+            post.user_vote = None  # No vote
+        print(f"Post ID: {post.id}, Has Voted: {post.has_voted}, User Vote: {post.user_vote}")  # Debugging output
 
     # Set up pagination
-    paginator = Paginator(ordered_queryset, 5)  # 5 posts per page
+    total_posts = len(filtered_queryset)
+    paginator = Paginator(filtered_queryset, 5)  # 5 posts per page
     page = request.GET.get('page')
     list_page = paginator.get_page(page)
 
@@ -68,9 +77,9 @@ def post(request):
         'list_page': list_page,
         'my_filter': my_filter,
         'total_posts': total_posts,
-        'users_voted_posts': users_voted_posts
     }
     return render(request, 'index.html', context)
+
 
 def post_details(request, pk):
     post = get_object_or_404(Post, id=pk)

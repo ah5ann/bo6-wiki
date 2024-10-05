@@ -13,7 +13,6 @@
 </div>
 {% if post_data %}
 {% for x in list_page %}
-{% for voted_posts in users_voted_posts %}
 <div class="card text-center" style="padding: 15px; margin: 20px; border-radius: 20px; top: 0px; border: solid #ec6f00 3px;">
     <div class="card-header">
         <h5 class="card-title">{{ x.post_name }}<br><span class="date_created" style="font-size: 12px; float: right; color: #837a7a;">{{ x.created_date }}</span></h5>
@@ -29,15 +28,20 @@
             <span class="up_vote_total" style="float: right;">
                 <input type="hidden" name="vote" value="{{ x.id }}">
                 <button type="submit" name="vote_options" value="upvote"
-                    style="background-color: {% if voted_posts.vote == 'upvote' %}green{% else %}{% endif %} !important">&#8682;</button>
+                    style="background-color: {% if x.has_voted and x.user_vote == 'upvote' %}green{% elif x.has_voted and x.user_vote == 'downvote' %}initial{% else %}initial{% endif %} !important">
+                    &#8682;
+                </button>
+                
                 {{ x.up_vote_total }}
+                
                 <button type="submit" name="vote_options" value="downvote"
-                    style="background-color: {% if voted_posts.vote == 'downvote' %}red{% else %}{% endif %} !important">&#8681;</button>
+                    style="background-color: {% if x.has_voted and x.user_vote == 'downvote' %}red{% elif x.has_voted and x.user_vote == 'upvote' %}initial{% else %}initial{% endif %} !important">
+                    &#8681;
+                </button>
             </span>
-        </form>
+        </form> 
     </div>
 </div>
-{% endfor %}
 {% endfor %}
 {% else %}
 <p>No Posts</p>
