@@ -15,7 +15,7 @@
         <p class="card-text">{{ post.main_weapon.weapon_name }} </br> {{ post.attachment1.attachment_name }} + {{ post.attachment2.attachment_name }} </br> {{ post.attachment3.attachment_name }} </br> {{ post.attachment4.attachment_name }} + {{ post.attachment5.attachment_name }}</p>
     </div>
     <div class="card-footer text-muted">
-
+        {% if user.is_authenticated %}
         <form method="POST">
             {% csrf_token %}
             <span class="up_vote_total" style="float: right;">
@@ -27,7 +27,7 @@
                     style="background-color: {% if posts_vote.vote == 'downvote' %}red{% else %}{% endif %} !important">&#8681;</button>
             </span>
         </form>
-        
+        {% endif %}
     </div>
 </div>
 {% else %}

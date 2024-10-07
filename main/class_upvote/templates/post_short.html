@@ -23,6 +23,7 @@
     </div>
     <div class="card-footer text-muted">
         <a href="{% url 'post_details' x.id%}" style="float: left;">View Post</a>
+        {% if user.is_authenticated %}
         <form method="POST">
             {% csrf_token %}
             <span class="up_vote_total" style="float: right;">
@@ -40,6 +41,7 @@
                 </button>
             </span>
         </form> 
+        {% endif %}
     </div>
 </div>
 {% endfor %}
