@@ -85,7 +85,8 @@ def post_details(request, pk):
     post = get_object_or_404(Post, id=pk)
 
     # Check if the user has already voted on this post
-    existing_vote = Vote.objects.filter(post_voted=post).first()
+    #existing_vote = Vote.objects.filter(post_voted=post, voted_by=request.user).first()
+    existing_vote = Vote.objects.filter(post_voted=post).first() 
         
     has_voted = existing_vote is not None
     print("Has Voted?", has_voted)
