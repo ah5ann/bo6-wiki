@@ -140,6 +140,11 @@ def post_details(request, pk):
     
     return render(request, 'post_details.html', context)
 
+#def voting(vote_id, vote_option):
+# return new option new total
+       
+
+
 @login_required(login_url="/accounts/login/")
 def my_posts(request):
     my_posts = Post.objects.filter(created_by=request.user)
