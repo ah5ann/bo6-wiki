@@ -126,6 +126,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'  # Use `/` to join with Path objects
 
 STATICFILES_DIRS = [
     BASE_DIR / 'static',  # Use `/` for Path objects
+    BASE_DIR / 'class_upvote/static', 
 ]
 
 

@@ -5,6 +5,9 @@ from .models import Post, Vote
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from .filters import PostFilter
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 @login_required(login_url="/accounts/login/")
 def form_view(request):
@@ -92,36 +95,43 @@ def post_details(request, pk):
     print("Has Voted?", has_voted)
 
     if request.method == 'POST':
-        vote_options = request.POST.get('vote_options')
-
+        data = json.loads(request.body)
+        post_id = data['vote']
+        vote_option = data['vote_option']
+    
         if has_voted:  # If the user has voted, we want to change their vote
-            if existing_vote.vote == 'upvote' and vote_options == 'downvote':
-                print(f"Changing vote from upvote to downvote for post id: {post.id}")
+            if existing_vote.vote == 'upvote' and vote_option == 'downvote':
+                print(f"Changing vote from upvote to downvote for post id: {post_id}")
                 post.up_vote_total -= 1  # Decrement upvote count
                 post.save()
                 existing_vote.vote = 'downvote'  # Update the vote
                 existing_vote.save()
-            elif existing_vote.vote == 'downvote' and vote_options == 'upvote':
-                print(f"Changing vote from downvote to upvote for post id: {post.id}")
+            elif existing_vote.vote == 'downvote' and vote_option == 'upvote':
+                print(f"Changing vote from downvote to upvote for post id: {post_id}")
                 post.up_vote_total += 1  # Increment upvote count
                 post.save()
                 existing_vote.vote = 'upvote'  # Update the vote
                 existing_vote.save()
         else:  # User is voting for the first time
-            if vote_options == 'upvote':
-                print(f"{vote_options} post id: {post.id}")
+            if vote_option == 'upvote':
+                print(f"{vote_option} post id: {post_id}")
                 post.up_vote_total += 1
                 post.save()
-            elif vote_options == 'downvote':
-                print(f"{vote_options} post id: {post.id}")
+            elif vote_option == 'downvote':
+                print(f"{vote_option} post id: {post_id}")
                 post.up_vote_total -= 1
                 post.save()
 
             # Create a new Vote instance
-            Vote.objects.create(voted_by=request.user, vote=vote_options, post_voted=post)
-
-        # Redirect to avoid form re-submission
-        return redirect('post_details', pk=pk)
+            Vote.objects.create(voted_by=request.user, vote=vote_option, post_voted=post)
+            
+        new_vote_total = post.up_vote_total
+        print(f"new total {new_vote_total}")
+        
+        return JsonResponse({
+            'new_vote_total': new_vote_total,
+            'new_vote' : existing_vote.vote
+        })
 
     context = {
         'post': post,

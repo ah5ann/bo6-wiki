@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
-
 {% block content %}
+
+{% load static %}
+<script src="{% static 'js/post_voting.js' %}"></script>
 <br>
 <br>
 <br>
@@ -16,17 +18,19 @@
     </div>
     <div class="card-footer text-muted">
         {% if user.is_authenticated %}
-        <form method="POST">
-            {% csrf_token %}
+
+
             <span class="up_vote_total" style="float: right;">
-                <input type="hidden" name="vote" value="{{ post.id }}">
-                <button type="submit" name="vote_options" value="upvote"
+                <input type="hidden" id="csrf_token" value="{{ csrf_token }}">
+                <input type="hidden" name="vote" value="{{ post.id }}" id="vote_post_id">
+                <button class="upvote_btn" type="button" onclick="sendVote('upvote')" value="upvote"
                     style="background-color: {% if posts_vote.vote == 'upvote' %}green{% else %}{% endif %} !important">&#8682;</button>
-                {{ x.up_vote_total }}
-                <button type="submit" name="vote_options" value="downvote"
+                <span class="total_votes">{{ post.up_vote_total }}</span>
+                <button class ="downvote_btn" type="button" onclick="sendVote('downvote')" value="downvote"
                     style="background-color: {% if posts_vote.vote == 'downvote' %}red{% else %}{% endif %} !important">&#8681;</button>
             </span>
-        </form>
+
+
         {% endif %}
     </div>
 </div>
