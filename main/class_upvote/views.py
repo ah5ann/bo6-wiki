@@ -94,11 +94,32 @@ def post_details(request, pk):
     has_voted = existing_vote is not None
     print("Has Voted?", has_voted)
 
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        post_id = data['vote']
-        vote_option = data['vote_option']
+    context = {
+        'post': post,
+        'posts_vote': existing_vote
+    }
     
+    return render(request, 'post_details.html', context)
+
+def voting(request, pk):
+    
+    if request.method == 'POST':
+        post = get_object_or_404(Post, id=pk)
+        
+        try:
+            data = json.loads(request.body)
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+        
+        vote_option = data['vote_option']
+        post_id = data['vote']
+        
+        if vote_option not in ['upvote', 'downvote']:
+            return JsonResponse({'error': 'Invalid vote option'}, status=400)
+        
+        existing_vote = Vote.objects.filter(post_voted=post).first() 
+        has_voted = existing_vote is not None
+        
         if has_voted:  # If the user has voted, we want to change their vote
             if existing_vote.vote == 'upvote' and vote_option == 'downvote':
                 print(f"Changing vote from upvote to downvote for post id: {post_id}")
@@ -124,25 +145,15 @@ def post_details(request, pk):
 
             # Create a new Vote instance
             Vote.objects.create(voted_by=request.user, vote=vote_option, post_voted=post)
-            
+                
         new_vote_total = post.up_vote_total
-        print(f"new total {new_vote_total}")
-        
+        print(f"new total {new_vote_total} ex vote {existing_vote.vote}")
+        print(request.body)
+            
         return JsonResponse({
-            'new_vote_total': new_vote_total,
+            'new_vote_total' : new_vote_total,
             'new_vote' : existing_vote.vote
         })
-
-    context = {
-        'post': post,
-        'posts_vote': existing_vote
-    }
-    
-    return render(request, 'post_details.html', context)
-
-#def voting(vote_id, vote_option):
-# return new option new total
-       
 
 
 @login_required(login_url="/accounts/login/")
