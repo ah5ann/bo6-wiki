@@ -46,6 +46,12 @@ def form_view(request):
 def post(request):
     queryset = Post.objects.all()  # Get all posts
     
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        pk = data['vote']
+        data = voting(request, pk)
+        return JsonResponse(data)
+    
     # User votes only if user is authenticated
     user_votes = []
     if request.user.is_authenticated:
@@ -116,7 +122,6 @@ def voting(request, pk):
             return JsonResponse({'error': 'Invalid JSON'}, status=400)
         
         vote_option = data['vote_option']
-        post_id = data['vote']
         
         if vote_option not in ['upvote', 'downvote']:
             return JsonResponse({'error': 'Invalid vote option'}, status=400)
@@ -126,24 +131,24 @@ def voting(request, pk):
         
         if has_voted:  # If the user has voted, we want to change their vote
             if existing_vote.vote == 'upvote' and vote_option == 'downvote':
-                print(f"Changing vote from upvote to downvote for post id: {post_id}")
+                print(f"Changing vote from upvote to downvote for post id: {pk}")
                 post.up_vote_total -= 1  # Decrement upvote count
                 post.save()
                 existing_vote.vote = 'downvote'  # Update the vote
                 existing_vote.save()
             elif existing_vote.vote == 'downvote' and vote_option == 'upvote':
-                print(f"Changing vote from downvote to upvote for post id: {post_id}")
+                print(f"Changing vote from downvote to upvote for post id: {pk}")
                 post.up_vote_total += 1  # Increment upvote count
                 post.save()
                 existing_vote.vote = 'upvote'  # Update the vote
                 existing_vote.save()
         else:  # User is voting for the first time
             if vote_option == 'upvote':
-                print(f"{vote_option} post id: {post_id}")
+                print(f"{vote_option} post id: {pk}")
                 post.up_vote_total += 1
                 post.save()
             elif vote_option == 'downvote':
-                print(f"{vote_option} post id: {post_id}")
+                print(f"{vote_option} post id: {pk}")
                 post.up_vote_total -= 1
                 post.save()
 

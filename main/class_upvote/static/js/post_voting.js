@@ -1,7 +1,7 @@
-function sendVote(voteOption) {
-    console.log("voteoption", voteOption)
+function sendVote_unique(voteOption) {
     var postId = document.getElementById('vote_post_id').value;
     var csrfToken = document.getElementById('csrf_token').value;
+    console.log("ID: ", postId)
 
     var xhr = new XMLHttpRequest();
     xhr.open('POST', postId, true);
@@ -26,11 +26,13 @@ function sendVote(voteOption) {
         }
     };
 
-    var data = JSON.stringify({vote: postId, vote_option: voteOption, csrfToken: csrfToken});
-    try{
+    var data = JSON.stringify({ vote_option: voteOption, csrfToken: csrfToken });
         xhr.send(data);
-    }
-    catch(err) {
-        console.log(err)
-    }
+}
+
+function sendVote(voteOption) {
+    var postId = document.getElementById('vote_post_id_short').value;
+    var csrfToken = document.getElementById('csrf_token').value;
+    console.log("id:", postId)
+
 }
