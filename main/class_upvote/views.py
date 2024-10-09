@@ -93,6 +93,10 @@ def post_details(request, pk):
         
     has_voted = existing_vote is not None
     print("Has Voted?", has_voted)
+    
+    if request.method == 'POST':
+        data = voting(request, pk)
+        return JsonResponse(data)
 
     context = {
         'post': post,
@@ -103,7 +107,7 @@ def post_details(request, pk):
 
 def voting(request, pk):
     
-    if request.method == 'POST':
+
         post = get_object_or_404(Post, id=pk)
         
         try:
@@ -150,10 +154,10 @@ def voting(request, pk):
         print(f"new total {new_vote_total} ex vote {existing_vote.vote}")
         print(request.body)
             
-        return JsonResponse({
+        return {
             'new_vote_total' : new_vote_total,
             'new_vote' : existing_vote.vote
-        })
+        }
 
 
 @login_required(login_url="/accounts/login/")

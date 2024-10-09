@@ -4,7 +4,7 @@ function sendVote(voteOption) {
     var csrfToken = document.getElementById('csrf_token').value;
 
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'post/' + postId, true);
+    xhr.open('POST', postId, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.setRequestHeader('X-CSRFToken', csrfToken);
 
