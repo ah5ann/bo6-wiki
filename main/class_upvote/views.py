@@ -59,7 +59,6 @@ def post(request):
 
     # Create a dictionary for quick access
     user_vote_dict = {vote['post_voted']: vote['vote'] for vote in user_votes}
-    print("User Vote Dict:", user_vote_dict)  # Debugging output
 
     # Apply filtering
     my_filter = PostFilter(request.GET, queryset=queryset)
@@ -73,7 +72,6 @@ def post(request):
         else:
             post.has_voted = False
             post.user_vote = None  # No vote
-        print(f"Post ID: {post.id}, Has Voted: {post.has_voted}, User Vote: {post.user_vote}")  # Debugging output
 
     # Set up pagination
     total_posts = len(filtered_queryset)
@@ -98,7 +96,6 @@ def post_details(request, pk):
     existing_vote = Vote.objects.filter(post_voted=post).first() 
         
     has_voted = existing_vote is not None
-    print("Has Voted?", has_voted)
     
     if request.method == 'POST':
         data = voting(request, pk)
@@ -112,7 +109,6 @@ def post_details(request, pk):
     return render(request, 'post_details.html', context)
 
 def voting(request, pk):
-    
 
         post = get_object_or_404(Post, id=pk)
         
@@ -131,24 +127,20 @@ def voting(request, pk):
         
         if has_voted:  # If the user has voted, we want to change their vote
             if existing_vote.vote == 'upvote' and vote_option == 'downvote':
-                print(f"Changing vote from upvote to downvote for post id: {pk}")
                 post.up_vote_total -= 1  # Decrement upvote count
                 post.save()
                 existing_vote.vote = 'downvote'  # Update the vote
                 existing_vote.save()
             elif existing_vote.vote == 'downvote' and vote_option == 'upvote':
-                print(f"Changing vote from downvote to upvote for post id: {pk}")
                 post.up_vote_total += 1  # Increment upvote count
                 post.save()
                 existing_vote.vote = 'upvote'  # Update the vote
                 existing_vote.save()
         else:  # User is voting for the first time
             if vote_option == 'upvote':
-                print(f"{vote_option} post id: {pk}")
                 post.up_vote_total += 1
                 post.save()
             elif vote_option == 'downvote':
-                print(f"{vote_option} post id: {pk}")
                 post.up_vote_total -= 1
                 post.save()
 
@@ -156,8 +148,6 @@ def voting(request, pk):
             Vote.objects.create(voted_by=request.user, vote=vote_option, post_voted=post)
                 
         new_vote_total = post.up_vote_total
-        print(f"new total {new_vote_total} ex vote {existing_vote.vote}")
-        print(request.body)
             
         return {
             'new_vote_total' : new_vote_total,
