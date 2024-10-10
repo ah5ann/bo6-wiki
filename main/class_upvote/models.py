@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from datetime import date
 from django.utils.translation import gettext_lazy as _
-import datetime
+from django.utils import timezone
 
 class Category(models.Model):
     category_name = models.CharField(max_length=30)
@@ -45,6 +45,7 @@ class Post(models.Model):
     attachment5 = models.ForeignKey(Attachment, on_delete=models.CASCADE, related_name='post_attachment5', default=1)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     created_date = models.DateField(_("Date"), auto_now_add=True)
+    created_time = models.TimeField(_("Time created"), auto_now_add=True)
     up_vote_total = models.IntegerField(default=1)
     
     def __str__(self):

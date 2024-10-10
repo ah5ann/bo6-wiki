@@ -16,7 +16,11 @@
 {% for x in list_page %}
 <div class="card text-center" style="padding: 15px; margin: 20px; border-radius: 20px; top: 0px; border: solid #ec6f00 3px;">
     <div class="card-header">
-        <h5 class="card-title">{{ x.post_name }}<br><span class="date_created" style="font-size: 12px; float: right; color: #837a7a;">{{ x.created_date }}</span></h5>
+        <h5 class="card-title">{{ x.post_name }}<br>
+            <span class="date_created" style="font-size: 12px; float: right; color: #837a7a;">{{ x.created_date }}</span>
+        </br>
+            <span class="time_created" style="font-size: 12px; float: right; color: #837a7a;">{{ x.created_time }}</span>
+        </h5>
     </div>
     <div class="card-body">
         <!--<h5 class="card-title">{{ x.post_name }}</h5>-->
@@ -36,6 +40,10 @@
                 style="background-color: {% if x.has_voted and x.user_vote == 'downvote' %}red{% else %}{% endif %} !important">&#8681;</button>
         </span> 
 
+        {% endif %}
+        {% if not user.is_authenticated %}
+        <span class="total_votes" id="total_votes_{{ x.id }}" style="float: right;">Votes: {{ x.up_vote_total }}</span>
+        <h5 style="font-size: 0.5rem;">Created by: {{ x.created_by }}<h5>
         {% endif %}
     </div>
 </div>
