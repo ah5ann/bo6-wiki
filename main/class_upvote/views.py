@@ -1,3 +1,4 @@
+from django.db.models.query import QuerySet
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import ClassForm
 from django.urls import reverse
@@ -6,8 +7,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from .filters import PostFilter
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 import json
+from django.views.generic import ListView
 
 @login_required(login_url="/accounts/login/")
 def form_view(request):
@@ -86,6 +87,7 @@ def post(request):
     paginator = Paginator(filtered_queryset, 5)  # 5 posts per page
     page = request.GET.get('page')
     list_page = paginator.get_page(page)
+
 
     context = {
         'post_data': filtered_queryset,
@@ -170,3 +172,14 @@ def my_posts(request):
         'my_posts': my_posts
     }
     return render(request, 'my_posts.html', context)
+
+class PostsList(ListView):
+    template_name = 'post_list.html'
+    model = Post
+    context_object_name = 'posts'
+    paginate_by = 3
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        ordering = self.request.GET.get('sort', '-created_date')  # Default to descending order by created_date
+        return queryset.order_by(ordering)
