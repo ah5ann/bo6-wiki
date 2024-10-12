@@ -44,7 +44,7 @@ class Post(models.Model):
     attachment4 = models.ForeignKey(Attachment, on_delete=models.CASCADE, related_name='post_attachment4', default=1)
     attachment5 = models.ForeignKey(Attachment, on_delete=models.CASCADE, related_name='post_attachment5', default=1)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
-    created_date = models.DateField(_("Date"), auto_now_add=True)
+    created_date = models.DateField(_("Date"))
     created_time = models.TimeField(_("Time created"), auto_now_add=True)
     up_vote_total = models.IntegerField(default=1)
     

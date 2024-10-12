@@ -56,9 +56,11 @@ def post(request):
     user_votes = []
     if request.user.is_authenticated:
         user_votes = Vote.objects.filter(voted_by=request.user).values('post_voted', 'vote')
+        print(f"user votes: {user_votes}")
 
     # Create a dictionary for quick access
     user_vote_dict = {vote['post_voted']: vote['vote'] for vote in user_votes}
+    print(f"user votes dict: {user_vote_dict}")
 
     # Apply filtering
     my_filter = PostFilter(request.GET, queryset=queryset)
@@ -72,6 +74,12 @@ def post(request):
         else:
             post.has_voted = False
             post.user_vote = None  # No vote
+
+    sort_top = request.GET.get('sort')
+    if sort_top == 'desc':
+        filtered_queryset = filtered_queryset.order_by('-up_vote_total')
+    elif sort_top == 'newest':
+        filtered_queryset = filtered_queryset.order_by('-created_date')        
 
     # Set up pagination
     total_posts = len(filtered_queryset)
