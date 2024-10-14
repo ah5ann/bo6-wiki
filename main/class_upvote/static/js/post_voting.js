@@ -48,9 +48,13 @@ function sendVote(voteOption, post_id) {
             if (response.new_vote === 'upvote') {
                 document.querySelector('.upvote_btn_' + post_id).style.backgroundColor = "green";
                 document.querySelector('.downvote_btn_' + post_id).style.backgroundColor = "";
-            } else {
+            } else if (response.new_vote === 'downvote') {
                 document.querySelector('.downvote_btn_' + post_id).style.backgroundColor = "red";
                 document.querySelector('.upvote_btn_' + post_id).style.backgroundColor = "";
+            } else {
+                document.querySelector('.downvote_btn_' + post_id).style.backgroundColor = "";
+                document.querySelector('.upvote_btn_' + post_id).style.backgroundColor = "";
+
             }
         
         }

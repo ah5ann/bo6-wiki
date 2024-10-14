@@ -26,11 +26,13 @@ def voting(request, pk):
                 print(f"already clicked upvote && totalt votes = {post.up_vote_total}")
                 Vote.objects.filter(id=existing_vote.id).delete()
                 post.up_vote_total -= 1
+                post.save()
                 
             elif existing_vote.vote == 'downvote' and vote_option == 'downvote':
                 print(f"already clicked down vote && totalt votes = {post.up_vote_total}")
                 Vote.objects.filter(id=existing_vote.id).delete()
-                post.up_vote_total -= 1
+                post.up_vote_total += 1
+                post.save()
             
             else:        
 
@@ -50,11 +52,11 @@ def voting(request, pk):
                     
         else:  # User is voting for the first time
             if vote_option == 'upvote':
-                print(f"Vote casted as upvote && totalt votes = {post.up_vote_total}")
+                print(f"Vote casted as upvote && total votes = {post.up_vote_total}")
                 post.up_vote_total += 1
                 post.save()
             elif vote_option == 'downvote':
-                print(f"Vote casted as downvote && totalt votes = {post.up_vote_total}")
+                print(f"Vote casted as downvote && total votes = {post.up_vote_total}")
                 post.up_vote_total -= 1
                 post.save()
                 

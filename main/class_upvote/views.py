@@ -36,11 +36,21 @@ def form_view(request):
                 attachment3=attachment3,
                 attachment4=attachment4,
                 attachment5=attachment5,
-                created_by=request.user
+                created_by=request.user,
+                up_vote_total = 1 
+            )
+            print(f"id for new post: {new_post.id}")
+
+            post_instance = Post.objects.get(id=new_post.id)
+
+            vote_post = Vote.objects.create(
+                post_voted=post_instance,
+                voted_by=request.user,
+                vote='upvote'
             )
 
             # Redirect to the post details page after creation
-            return redirect(reverse('postdetails'))
+            return redirect(reverse('post_details', kwargs={'pk': new_post.id}))
     else:
         form = ClassForm()
 
@@ -49,6 +59,10 @@ def form_view(request):
 
 def post(request):
     queryset = Post.objects.all()  # Get all posts
+
+    if queryset:
+        unique = queryset[0]
+        print(f"now {unique.up_vote_total}")
     
     if request.method == 'POST':
         data = json.loads(request.body)
