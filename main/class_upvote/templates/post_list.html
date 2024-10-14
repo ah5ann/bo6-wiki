@@ -5,8 +5,7 @@
 <br>
 <br>
 <br>
-<a href="?sort=created_date">Sort Ascending</a>
-<a href="?sort=-created_date">Sort Descending</a>
+<a href="?sort=created_date">Sort</a>
 
 {% if posts %}
 {% for post in posts %}
@@ -16,6 +15,7 @@
 
 <nav aria-label="Page navigation example">
     {% if is_paginated %}
+
     <ul class="pagination">
         {% if page_obj.has_previous %}
         <li class="page-item">

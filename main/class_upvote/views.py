@@ -66,6 +66,12 @@ def post(request):
     # Apply filtering
     my_filter = PostFilter(request.GET, queryset=queryset)
     filtered_queryset = my_filter.qs  # Get the filtered queryset
+    
+    sort_top = request.GET.get('sort')
+    if sort_top == 'desc':
+        filtered_queryset = filtered_queryset.order_by('-up_vote_total')
+    elif sort_top == 'newest':
+        filtered_queryset = filtered_queryset.order_by('-created_date')    
 
     # Now loop through the filtered queryset to set has_voted and user_vote
     for post in filtered_queryset:
@@ -74,13 +80,7 @@ def post(request):
             post.user_vote = user_vote_dict[post.id]  # Should be 'upvote' or 'downvote'
         else:
             post.has_voted = False
-            post.user_vote = None  # No vote
-
-    sort_top = request.GET.get('sort')
-    if sort_top == 'desc':
-        filtered_queryset = filtered_queryset.order_by('-up_vote_total')
-    elif sort_top == 'newest':
-        filtered_queryset = filtered_queryset.order_by('-created_date')        
+            post.user_vote = None  # No vote    
 
     # Set up pagination
     total_posts = len(filtered_queryset)
