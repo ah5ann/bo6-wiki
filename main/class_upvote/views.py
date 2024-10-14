@@ -9,6 +9,9 @@ from .filters import PostFilter
 from django.http import JsonResponse
 import json
 from django.views.generic import ListView
+from django.utils.decorators import method_decorator
+from functions.vote import voting
+from django.views.generic import DetailView
 
 @login_required(login_url="/accounts/login/")
 def form_view(request):
@@ -57,11 +60,9 @@ def post(request):
     user_votes = []
     if request.user.is_authenticated:
         user_votes = Vote.objects.filter(voted_by=request.user).values('post_voted', 'vote')
-        print(f"user votes: {user_votes}")
 
     # Create a dictionary for quick access
     user_vote_dict = {vote['post_voted']: vote['vote'] for vote in user_votes}
-    print(f"user votes dict: {user_vote_dict}")
 
     # Apply filtering
     my_filter = PostFilter(request.GET, queryset=queryset)
@@ -88,7 +89,6 @@ def post(request):
     page = request.GET.get('page')
     list_page = paginator.get_page(page)
 
-
     context = {
         'post_data': filtered_queryset,
         'list_page': list_page,
@@ -97,81 +97,39 @@ def post(request):
     }
     return render(request, 'index.html', context)
 
-
-def post_details(request, pk):
-    post = get_object_or_404(Post, id=pk)
-
-    # Check if the user has already voted on this post
-    #existing_vote = Vote.objects.filter(post_voted=post, voted_by=request.user).first()
-    existing_vote = Vote.objects.filter(post_voted=post).first() 
-        
-    has_voted = existing_vote is not None
+class PostDetails(DetailView):
+    model = Post
+    template_name = 'post_details.html'
+    context_object_name = 'post'
     
-    if request.method == 'POST':
-        data = voting(request, pk)
-        return JsonResponse(data)
-
-    context = {
-        'post': post,
-        'posts_vote': existing_vote
-    }
+    def get_object(self, queryset=None):
+        return get_object_or_404(Post, id=self.kwargs['pk'])
     
-    return render(request, 'post_details.html', context)
-
-def voting(request, pk):
-
-        post = get_object_or_404(Post, id=pk)
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        context = self.get_context_data(post=self.object)
         
-        try:
-            data = json.loads(request.body)
-        except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON'}, status=400)
+        posts_voted = Vote.objects.filter(post_voted=self.object).first()
+        context['posts_voted'] = posts_voted
         
-        vote_option = data['vote_option']
+        return self.render_to_response(context)
         
-        if vote_option not in ['upvote', 'downvote']:
-            return JsonResponse({'error': 'Invalid vote option'}, status=400)
+    def post(self, request, *args, **kwargs):
+        pk = kwargs.get('pk')
+        if request.method == 'POST':
+            data = voting(request, pk)
+            return JsonResponse(data)
         
-        existing_vote = Vote.objects.filter(post_voted=post).first() 
-        has_voted = existing_vote is not None
-        
-        if has_voted:  # If the user has voted, we want to change their vote
-            if existing_vote.vote == 'upvote' and vote_option == 'downvote':
-                post.up_vote_total -= 1  # Decrement upvote count
-                post.save()
-                existing_vote.vote = 'downvote'  # Update the vote
-                existing_vote.save()
-            elif existing_vote.vote == 'downvote' and vote_option == 'upvote':
-                post.up_vote_total += 1  # Increment upvote count
-                post.save()
-                existing_vote.vote = 'upvote'  # Update the vote
-                existing_vote.save()
-        else:  # User is voting for the first time
-            if vote_option == 'upvote':
-                post.up_vote_total += 1
-                post.save()
-            elif vote_option == 'downvote':
-                post.up_vote_total -= 1
-                post.save()
 
-            # Create a new Vote instance
-            Vote.objects.create(voted_by=request.user, vote=vote_option, post_voted=post)
-                
-        new_vote_total = post.up_vote_total
-            
-        return {
-            'new_vote_total' : new_vote_total,
-            'new_vote' : existing_vote.vote
-        }
+@method_decorator(login_required(login_url="/accounts/login/"), name='dispatch')
+class UserPostsList(ListView):
+    template_name = 'my_posts.html'
+    context_object_name = 'my_posts'
+    paginate_by = 5
+    
+    def get_queryset(self):
+        return Post.objects.filter(created_by=self.request.user)
 
-
-@login_required(login_url="/accounts/login/")
-def my_posts(request):
-    my_posts = Post.objects.filter(created_by=request.user)
-    context = {
-        'my_posts': my_posts
-    }
-    return render(request, 'my_posts.html', context)
 
 class PostsList(ListView):
     template_name = 'post_list.html'

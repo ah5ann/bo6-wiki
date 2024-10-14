@@ -24,10 +24,10 @@
                 <input type="hidden" id="csrf_token" value="{{ csrf_token }}">
                 <input type="hidden" name="vote" value="{{ post.id }}" id="vote_post_id">
                 <button class="upvote_btn" type="button" onclick="sendVote_unique('upvote')" value="upvote"
-                    style="background-color: {% if posts_vote.vote == 'upvote' %}green{% else %}{% endif %} !important">&#8682;</button>
+                    style="background-color: {% if posts_voted.vote == 'upvote' %}green{% else %}{% endif %} !important">&#8682;</button>
                 <span class="total_votes">{{ post.up_vote_total }}</span>
                 <button class ="downvote_btn" type="button" onclick="sendVote_unique('downvote')" value="downvote"
-                    style="background-color: {% if posts_vote.vote == 'downvote' %}red{% else %}{% endif %} !important">&#8681;</button>
+                    style="background-color: {% if posts_voted.vote == 'downvote' %}red{% else %}{% endif %} !important">&#8681;</button>
             </span>
 
 
