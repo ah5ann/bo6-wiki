@@ -32,7 +32,6 @@ function sendVote_unique(voteOption) {
 function sendVote(voteOption, post_id) {
     console.log("id:", post_id, "option", voteOption)
     var csrfToken = document.getElementById('csrf_token').value;
-    var vote_total_id = document.querySelector('.total_votes').id
 
     var xhr = new XMLHttpRequest();
     xhr.open('POST', '', true);
@@ -42,7 +41,6 @@ function sendVote(voteOption, post_id) {
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && xhr.status === 200) {
             var response = JSON.parse(xhr.responseText);
-            console.log(typeof response.has_voted)
             document.querySelector('#total_votes_' + post_id).innerHTML = response.new_vote_total;
             if (response.new_vote === 'upvote') {
                 document.querySelector('.upvote_btn_' + post_id).style.backgroundColor = "green";
@@ -50,13 +48,11 @@ function sendVote(voteOption, post_id) {
             } else if (response.new_vote === 'downvote') {
                 document.querySelector('.downvote_btn_' + post_id).style.backgroundColor = "red";
                 document.querySelector('.upvote_btn_' + post_id).style.backgroundColor = "";
-            } else if (response.new_vote === 'none') {
-                document.querySelector('.downvote_btn_' + post_id).style.backgroundColor = "";
-                document.querySelector('.upvote_btn_' + post_id).style.backgroundColor = "";
             }
         }
     };
 
     var data = JSON.stringify({ vote: post_id, vote_option: voteOption, csrfToken: csrfToken });
-        xhr.send(data);
+    console.log(data)
+    xhr.send(data);
 }
