@@ -30,7 +30,7 @@ def voting(request, pk):
             
         elif existing_vote.vote == 'downvote' and vote_option == 'downvote':
             print(f"already clicked down vote && total votes = {post.up_vote_total}")
-            Vote.objects.filter(id=existing_vote.id).delete()
+            Vote.objects.filter(id=existing_vote.id).delete()  
             post.up_vote_total += 1
             post.save()
         
@@ -38,13 +38,13 @@ def voting(request, pk):
 
             if existing_vote.vote == 'upvote' and vote_option == 'downvote':
                 print(f"Previous vote was upvote no its downvote && totalt votes = {post.up_vote_total}")
-                post.up_vote_total -= 1  # Decrement upvote count
+                post.up_vote_total -= 2  # Decrement upvote count
                 post.save()
                 existing_vote.vote = 'downvote'  # Update the vote
                 existing_vote.save()
             elif existing_vote.vote == 'downvote' and vote_option == 'upvote':
                 print(f"Previous vote was downvote now its upvote && totalt votes = {post.up_vote_total}")
-                post.up_vote_total += 1  # Increment upvote count
+                post.up_vote_total += 2  # Increment upvote count
                 post.save()
                 existing_vote.vote = 'upvote'  # Update the vote
                 existing_vote.save()
