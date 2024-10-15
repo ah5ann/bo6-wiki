@@ -18,7 +18,9 @@ def voting(request, pk):
         return JsonResponse({'error': 'Invalid vote option'}, status=400)
     
     existing_vote = Vote.objects.filter(post_voted=post).first() 
+    print(f"exis vote: {existing_vote}")
     has_voted = existing_vote is not None
+    print(f"has_voted?: {has_voted}")
     
     if has_voted: 
         
@@ -27,12 +29,14 @@ def voting(request, pk):
             Vote.objects.filter(id=existing_vote.id).delete()
             post.up_vote_total -= 1
             post.save()
+            vote_option = 'none'
             
         elif existing_vote.vote == 'downvote' and vote_option == 'downvote':
             print(f"already clicked down vote && total votes = {post.up_vote_total}")
             Vote.objects.filter(id=existing_vote.id).delete()  
             post.up_vote_total += 1
             post.save()
+            vote_option = 'none'
         
         else:        
 
@@ -62,7 +66,9 @@ def voting(request, pk):
         Vote.objects.create(voted_by=request.user, vote=vote_option, post_voted=post)
     
     new_vote_total = post.up_vote_total
-    print(f"final total = {new_vote_total}")        
+    print(f"final total = {new_vote_total}") 
+       
+    print(F"has voted? : {has_voted}")    
     
     # if has_voted:  # If the user has voted, we want to change their vote
     #     if existing_vote.vote == 'upvote' and vote_option == 'downvote':
@@ -87,5 +93,5 @@ def voting(request, pk):
         
     return {
         'new_vote_total' : new_vote_total,
-        'new_vote' : vote_option
+        'new_vote' : vote_option,
     }

@@ -68,6 +68,7 @@ def post(request):
         data = json.loads(request.body)
         pk = data['vote']
         data = voting(request, pk)
+        print(data)
         return JsonResponse(data)
     
     # User votes only if user is authenticated
