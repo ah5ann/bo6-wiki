@@ -55,7 +55,7 @@ class Post(models.Model):
 class Vote(models.Model):
     post_voted = models.ForeignKey(Post, on_delete=models.CASCADE)
     voted_by = models.ForeignKey(User, on_delete=models.CASCADE)
-    vote = models.CharField(max_length=10, choices=[('upvote', 'UpVote'), ('downvote', 'DownVote')])
+    vote = models.CharField(max_length=10, choices=[('upvote', 'UpVote'), ('downvote', 'DownVote'), ('none', 'None')])
     
     def __str__(self):
         return f"{self.vote} {self.post_voted.id} {self.voted_by}"
