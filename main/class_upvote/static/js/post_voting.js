@@ -1,9 +1,23 @@
-function sendVote_unique(voteOption) {
-    var postId = document.getElementById('vote_post_id').value;
-    var csrfToken = document.getElementById('csrf_token').value;
+function vote_unique_post(element) {
+    const action = element.dataset.action;
+    const post_id = element.dataset.id;
+    const button_type = element.dataset.buttontype;
+    csrfToken = document.getElementById('csrf_token').value
+    console.log(element)
+    console.log(action, post_id, button_type, csrfToken)
+
+    if (action === "upvote") {
+        element.setAttribute("data-action", "null");
+    } else if (action === "downvote") {
+        element.setAttribute("data-action", "null");
+    } else if (action === "null" && buttontype === "upvote") {
+        element.setAttribute("data-action", "upvote");
+    } else if (action === "null" && buttontype === "upvote") {
+        element.setAttribute("data-action", "downvote");
+    }
 
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', postId, true);
+    xhr.open('POST', post_id, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.setRequestHeader('X-CSRFToken', csrfToken);
 

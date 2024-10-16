@@ -1,8 +1,7 @@
-from django.db.models.query import QuerySet
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import ClassForm
 from django.urls import reverse
-from .models import Post, Vote
+from .models import Post, Vote, User
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from .filters import PostFilter
@@ -12,6 +11,9 @@ from django.views.generic import ListView
 from django.utils.decorators import method_decorator
 from functions.vote import voting
 from django.views.generic import DetailView
+
+from rest_framework import permissions, viewsets
+from .serializers import PostSerializer
 
 @login_required(login_url="/accounts/login/")
 def form_view(request):
@@ -156,3 +158,9 @@ class PostsList(ListView):
         queryset = super().get_queryset()
         ordering = self.request.GET.get('sort', '-created_date')  # Default to descending order by created_date
         return queryset.order_by(ordering)
+    
+class PostViewset(viewsets.ModelViewSet):
+    
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    permission_classes = [permissions.IsAuthenticated]
