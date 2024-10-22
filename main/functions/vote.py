@@ -22,7 +22,11 @@ def voting(request, pk):
     Vote.objects.update_or_create(post_voted=post, voted_by=request.user, defaults={"vote": vote_option})
     post.up_vote_total = Vote.objects.filter(post_voted=post, vote="upvote").count() - Vote.objects.filter(post_voted=post, vote="downvote").count()
 
+    post.save()
+    
     new_vote_total = post.up_vote_total
+    
+    
     
     print(f"new total: {new_vote_total}")
     
