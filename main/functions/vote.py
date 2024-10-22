@@ -9,12 +9,14 @@ def voting(request, pk):
     
     try:
         data = json.loads(request.body)
+        print(f"data for unique post voting {data}")
     except json.JSONDecodeError:
         return JsonResponse({'error': 'Invalid JSON'}, status=400)
     
-    vote_option = data['vote_option']
+    vote_option = data['action']
+    print(f"vote option {vote_option}")
     
-    if vote_option not in ['upvote', 'downvote']:
+    if vote_option not in ['upvote', 'downvote', 'none']:
         return JsonResponse({'error': 'Invalid vote option'}, status=400)
     
     Vote.objects.update_or_create(post_voted=post, voted_by=request.user, defaults={"vote": vote_option})

@@ -135,6 +135,7 @@ class PostDetails(DetailView):
         pk = kwargs.get('pk')
         if request.method == 'POST':
             data = voting(request, pk)
+            print(f"this {data}")
             return JsonResponse(data)
         
 

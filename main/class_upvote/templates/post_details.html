@@ -23,10 +23,10 @@
             <span class="up_vote_total" style="float: right;">
                 <input type="hidden" id="csrf_token" value="{{ csrf_token }}">
                 <input type="hidden" name="vote" value="{{ post.id }}" id="vote_post_id">
-                <button class="upvote_btn" data-action="upvote" data-id="{{ post.id }}" data-buttontype="upvote" onclick="vote_unique_post(this)"
+                <button class="upvote_btn" data-action="{% if posts_voted.vote == 'upvote' %}upvote{% else %}none{% endif %}" data-id="{{ post.id }}" data-buttontype="upvote" onclick="vote_unique_post(this)"
                     style="background-color: {% if posts_voted.vote == 'upvote' %}green{% else %}{% endif %} !important">&#8682;</button>
                 <span class="total_votes">{{ post.up_vote_total }}</span>
-                <button class ="downvote_btn" data-action="downvote" data-id="{{ post.id }}" data-buttontype="downvote" onclick="vote_unique_post(this)"
+                <button class ="downvote_btn" data-action="{% if posts_voted.vote == 'downvote' %}downvote{% else %}none{% endif %}" data-id="{{ post.id }}" data-buttontype="downvote" onclick="vote_unique_post(this)"
                     style="background-color: {% if posts_voted.vote == 'downvote' %}red{% else %}{% endif %} !important">&#8681;</button>
             </span>
 
