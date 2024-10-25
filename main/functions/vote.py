@@ -20,8 +20,7 @@ def voting(request, pk):
         return JsonResponse({'error': 'Invalid vote option'}, status=400)
     
     Vote.objects.update_or_create(post_voted=post, voted_by=request.user, defaults={"vote": vote_option})
-    post.up_vote_total = Vote.objects.filter(post_voted=post, vote="upvote").count()
-    #Vote.objects.filter(post_voted=post, vote="downvote").count()
+    post.up_vote_total = Vote.objects.filter(post_voted=post, vote="upvote").count() - Vote.objects.filter(post_voted=post, vote="downvote").count()
 
     post.save()
     
