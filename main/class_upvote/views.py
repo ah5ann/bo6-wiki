@@ -126,7 +126,7 @@ class PostDetails(DetailView):
         self.object = self.get_object()
         context = self.get_context_data(post=self.object)
         
-        posts_voted = Vote.objects.filter(post_voted=self.object).first()
+        posts_voted = Vote.objects.filter(post_voted=self.object, voted_by=request.user).first()
         context['posts_voted'] = posts_voted
         
         return self.render_to_response(context)
